@@ -1,0 +1,2059 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{float}
+\usepackage[margin=1in]{geometry}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  stringstyle=\color{red},
+  commentstyle=\color{gray},
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  language=Python,
+  showstringspaces=false,
+  literate={≤}{{$\leq$}}1 
+           {λ}{{$\lambda$}}1
+           {μ}{{$\mu$}}1 
+           {σ}{{$\sigma$}}1
+           {≈}{{$\approx$}}1
+}
+
+\title{Foundations of Data Engineering Lab Report}
+\author{Nikhil Sivakumar}
+
+\begin{document}
+
+\begin{titlepage}
+	\centering
+	    
+	{\Huge\bfseries Foundations of Data Engineering Lab Report \par}
+	    
+	\vspace{1.5cm}
+	
+	{\Large\scshape
+		Nikhil Sivakumar\\
+		25120022\\
+		Shiv Nadar University\\
+		M. Tech AI \& Data Science
+		\par}
+	
+	\vfill 
+	
+	\includegraphics[width=4cm]{logo.png}
+	
+\end{titlepage}
+
+\clearpage
+
+\tableofcontents
+
+\clearpage
+
+\section{Exercise 1}
+
+\subsection{Description}
+The goal of this assignment is to visualize different activation functions - such as sigmoid, tanh, ReLU, and others - by plotting them in Python. A set of input values was selected to observe how these functions behave in a range. Python’s \textbf{matplotlib} library was used to generate the plots, and the \textbf{math} module provided tools for handling exponential computations.
+
+\subsection{Implementation}
+The Python code for the various functions.
+
+\subsubsection{Sigmoid Function}
+Plotting of the sigmoid activation function and its derivative:
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+def sigmoid_derivative(x):
+    s = sigmoid(x)
+    return s * (1 - s)
+
+x = np.linspace(-8, 8, 400)
+y = sigmoid(x)
+dy = sigmoid_derivative(x)
+
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, label='Sigmoid')
+plt.plot(x, dy, label='Derivative', linestyle='--')
+plt.title('Plot of Sigmoid and its derivative')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.legend()
+plt.grid(True)
+plt.show() 
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 1/Sigmoid.png}
+	\caption{Sigmoid Function and its Derivative}
+	\label{fig:sigmoid}
+\end{figure}
+
+\subsubsection{Tanh Function}
+Plotting the Tanh activation function and its derivative:
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-5, 5, 400)
+
+th = np.tanh(x)
+th_derivative = 1 - th**2
+
+plt.figure(figsize=(8, 5))
+plt.plot(x, th, label='Tanh')
+plt.plot(x, th_derivative, label='Derivative', linestyle='--')
+plt.title('Tanh and its derivative')
+plt.xlabel('x')
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.legend()
+plt.grid(True)
+plt.show() 
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 1/Tanh.png}
+	\caption{Tanh Function and its Derivative}
+	\label{fig:tanh}
+\end{figure}
+
+\subsubsection{ReLU Function}
+Python code for plotting the ReLU activation function and its derivative:
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-5, 5, 400)
+y = np.maximum(0, x)
+dy = np.where(x > 0, 1, 0)
+
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, label='ReLU')
+plt.plot(x, dy, label='Derivative', linestyle='--')
+plt.title('Plot of ReLU and its derivative')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.legend()
+plt.grid(True)
+plt.show() 
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 1/ReLU.png}
+	\caption{ReLU Function and its Derivative}
+	\label{fig:relu}
+\end{figure}
+
+\subsubsection{Piecewise Function}
+Plotting of Piecewise function and its derivative:
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-2, 2, 400)
+y = np.piecewise(x, [x < -1, (x >= -1) & (x < 0), (x >= 0) & (x <= 1), x > 1], [lambda x: 0, lambda x: 1 + x, lambda x: 1 - x, lambda x: 0])
+dy = np.piecewise(x, [x < -1, (x >= -1) & (x < 0), (x >= 0) & (x <= 1), x > 1], [lambda x: 0, lambda x: 1, lambda x: -1, lambda x: 0])
+
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, label='Piecewise function')
+plt.plot(x, dy, label='Derivative', linestyle='--')
+plt.title('Plot of piecewise function and its derivative')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.legend()
+plt.grid(True)
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 1/Piecewise.png}
+	\caption{Piecewise Function and its Derivative}
+	\label{fig:piecewise}
+\end{figure}
+
+\subsubsection{Exponential Decay Function}
+Plotting the Exponential Decay function and its derivative:
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-5, 5, 400)
+y = np.exp(-x)
+dy = -np.exp(-x)
+
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, label=r'$e^{-x}$')
+plt.plot(x, dy, label=r"Derivative: $-e^{-x}$", linestyle='--')
+plt.title(r'Plot of $e^{-x}$ and its derivative')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.axhline(0, color='black', linewidth=0.5)
+plt.axvline(0, color='black', linewidth=0.5)
+plt.legend()
+plt.grid(True)
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 1/ExponentialDecay.png}
+	\caption{Exponential Decay Function and its Derivative}
+	\label{fig:exponentialdecay}
+\end{figure}
+
+\clearpage
+
+\section{Exercise 2}
+
+\subsection{Description}
+The goal of this assignment is to normalize the numerical features - height, weight, age, and salary - using the z-score normalization and visualize their distributions before and after normalization. Statistical measures such as mean, variance, standard deviation, and range were computed to observe the effect. Box plots were created using Python’s matplotlib library to compare the original and normalized data ranges.
+
+\subsection{Implementation}
+Given below is the Implementation of the Exercise.
+
+\subsubsection{Python Code}
+The Python code used for normalization and visualization
+
+\begin{lstlisting}[language=Python]
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load data
+file = 'D:\College\Foundations of Data Engineering\Ex 2\sample_people.csv'
+df = pd.read_csv(file)
+
+# Columns to normalize
+numeric_cols = ['height', 'weight', 'age', 'salary']
+
+# Normalize using z-score
+means = df[numeric_cols].mean()
+stdevs = df[numeric_cols].std()
+df_norm = df.copy()
+df_norm[numeric_cols] = (df[numeric_cols] - means) / stdevs
+
+# Compute range for each column before normalization
+ranges_before = {}
+for col in numeric_cols:
+    col_min = df[col].min()
+    col_max = df[col].max()
+    ranges_before[col] = col_max - col_min
+    print(f"Before normalization - {col}: range={ranges_before[col]:.2f}")
+
+# Print mean, variance, standard deviation, and range before normalization
+print("\nStatistics BEFORE normalization:")
+for col in numeric_cols:
+    mean = df[col].mean()
+    var = df[col].var()
+    std = df[col].std()
+    col_min = df[col].min()
+    col_max = df[col].max()
+    col_range = col_max - col_min
+    print(f"{col}: mean={mean:.2f}, variance={var:.2f}, std={std:.2f}, range={col_range:.2f}")
+
+# Print mean, variance, standard deviation, and range after normalization
+print("\nStatistics AFTER normalization:")
+for col in numeric_cols:
+    mean = df_norm[col].mean()
+    var = df_norm[col].var()
+    std = df_norm[col].std()
+    col_min = df_norm[col].min()
+    col_max = df_norm[col].max()
+    col_range = col_max - col_min
+    print(f"{col}: mean={mean:.2f}, variance={var:.2f}, std={std:.2f}, range={col_range:.2f}")
+
+# Subplot for comparing Box plots
+plt.figure(figsize=(12, 6))
+
+# Subplot 1: Box plot of original features (before normalization)
+plt.subplot(1, 2, 1)
+plt.boxplot([df[col] for col in numeric_cols], labels=numeric_cols, patch_artist=True,
+            boxprops=dict(facecolor='lightblue', color='blue'),
+            medianprops=dict(color='red'),
+            whiskerprops=dict(color='blue'),
+            capprops=dict(color='blue'),
+            flierprops=dict(markerfacecolor='orange', marker='o', markersize=5, linestyle='none'))
+plt.ylabel('Original Value')
+plt.title('Box Plot of Original Features')
+
+# Subplot 2: Box plot of normalized features (after normalization)
+plt.subplot(1, 2, 2)
+plt.boxplot([df_norm[col] for col in numeric_cols], labels=numeric_cols, patch_artist=True,
+            boxprops=dict(facecolor='lightgreen', color='green'),
+            medianprops=dict(color='red'),
+            whiskerprops=dict(color='green'),
+            capprops=dict(color='green'),
+            flierprops=dict(markerfacecolor='orange', marker='o', markersize=5, linestyle='none'))
+plt.ylabel('Normalized Value (z-score)')
+plt.title('Box Plot of Normalized Features')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\subsubsection{Dataset}
+The following table shows the first few entries from the Dataset used.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|l|c|c|c|r|}
+		\hline
+		\textbf{No.} & \textbf{Name} & \textbf{Height} & \textbf{Weight} & \textbf{Age} & \textbf{Salary} \\
+		\hline
+		1            & Alice         & 165             & 60              & 28           & 273000          \\
+		2            & Bob           & 175             & 82              & 30           & 112000          \\
+		3            & Charlie       & 168             & 75              & 29           & 257000          \\
+		4            & David         & 180             & 90              & 30           & 188000          \\
+		5            & Eve           & 158             & 55              & 25           & 52000           \\
+		\hline
+	\end{tabular}
+	\caption{First five entries from the dataset}
+	\label{tab:first5data1}
+\end{table}
+
+\subsubsection{Output}
+The Output of the program is given below.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 2/Statistics of Normalization.png}
+	\caption{Statistics before and after normalization}
+	\label{fig:normalizationstatistics}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 2/OriginalvNormalized.png}
+	\caption{Visualization of Original and Normalized Ranges}
+	\label{fig:originalvnormalized}
+\end{figure}
+
+\clearpage
+
+\section{Exercise 3}
+
+\subsection{Description}
+The goal of this assignment is to analyze and visualize the probability distribution of the outcomes in random experiments. For this purpose, the probability mass function (PMF) and the cumulative distribution function (CDF) were computed and plotted for two sets of coin toss experiments (100 and 1000 tosses) and a small set of 10 height values. The PMF shows the probability of observing a specific number of heads, while the CDF shows the cumulative probability up to each outcome. Python’s matplotlib library was used to generate the plots, enabling a comparison of distributions for different sample sizes and data types.
+
+\subsection{Implementation}
+Given below is the Python Code and the Output.
+
+\subsubsection{100 Coin Tosses}
+The Python Code for 100 Coin Tosses
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import binom
+
+# Number of coin tosses
+n = 100
+# Probability of heads for a fair coin
+p = 0.5
+
+# Possible values for number of heads (X)
+x = np.arange(0, n + 1)
+
+# PMF: Probability Mass Function
+pmf = binom.pmf(x, n, p)
+
+# CDF: Cumulative Distribution Function
+cdf = binom.cdf(x, n, p)
+
+# Plot PMF
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+plt.stem(x, pmf, basefmt=" ")
+plt.title('PMF of Number of Heads in 100 Coin Tosses')
+plt.xlabel('Number of Heads (X)')
+plt.ylabel('P(X = x)')
+plt.grid(True)
+
+# Plot CDF
+plt.subplot(1, 2, 2)
+plt.plot(x, cdf, drawstyle='steps-post')
+plt.title('CDF of Number of Heads in 100 Coin Tosses')
+plt.xlabel('Number of Heads (X)')
+plt.ylabel('P(X ≤ x)')
+plt.grid(True)
+
+plt.tight_layout()
+plt.show() 
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 3/100 Coin Tosses.png}
+	\caption{PMF and CDF of 100 Coin Tosses}
+	\label{fig:100tosses}
+\end{figure}
+
+\subsubsection{1000 Coin Tosses}
+The Python Code for 1000 Coin Tosses
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import binom
+
+# Number of coin tosses
+n = 1000
+# Probability of heads for a fair coin
+p = 0.5
+
+# Possible values for number of heads (X)
+x = np.arange(0, n + 1)
+
+# PMF: Probability Mass Function
+pmf = binom.pmf(x, n, p)
+
+# CDF: Cumulative Distribution Function
+cdf = binom.cdf(x, n, p)
+
+# Plot PMF
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+plt.stem(x, pmf, basefmt=" ")
+plt.title('PMF of Number of Heads in 1000 Coin Tosses')
+plt.xlabel('Number of Heads (X)')
+plt.ylabel('P(X = x)')
+plt.grid(True)
+
+# Plot CDF
+plt.subplot(1, 2, 2)
+plt.plot(x, cdf, drawstyle='steps-post')
+plt.title('CDF of Number of Heads in 1000 Coin Tosses')
+plt.xlabel('Number of Heads (X)')
+plt.ylabel('P(X ≤ x)')
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 3/1000 Coin Tosses.png}
+	\caption{PMF and CDF of 1000 Coin Tosses}
+	\label{fig:1000tosses}
+\end{figure}
+
+\subsubsection{10 Height Distribution}
+The Python Code for 10 Height Distribution values between 160-180
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+from collections import Counter
+
+heights = np.array([165, 170, 175, 180, 170, 165, 170, 175, 170, 160])
+
+# Compute PMF
+height_counts = Counter(heights)
+unique_heights = np.array(sorted(height_counts.keys()))
+pmf = np.array([height_counts[h] / len(heights) for h in unique_heights])
+
+# Compute CDF
+cdf = np.cumsum(pmf)
+
+# Plot PMF
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+plt.stem(unique_heights, pmf, basefmt=" ")
+plt.title("PMF of Heights")
+plt.xlabel("Height (cm)")
+plt.ylabel("P(Height = h)")
+plt.grid(True)
+
+# Plot CDF
+plt.subplot(1, 2, 2)
+plt.step(unique_heights, cdf, where="post")
+plt.title("CDF of Heights")
+plt.xlabel("Height (cm)")
+plt.ylabel("P(Height ≤ h)")
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 3/Height PMF CDF.png}
+	\caption{PMF and CDF of 10 Height Values}
+	\label{fig:heightpmfcdf}
+\end{figure}
+
+\clearpage
+
+\section{Exercise 4}
+
+\subsection{Description}
+The goal of this exercise is to analyze and visualize the behavior of continuous probability distributions using Python. Normal distributions with mean 0 and varying standard deviations (1, 0.5, 2, and 3) were plotted to observe the effect of spread. The percent point function (PPF) was used to determine the 95\% and 99\% quantiles of the standard normal distribution using \texttt{scipy}.
+
+Random values were generated from three distributions—Uniform, Normal, and Exponential—and visualized using histograms and cumulative distribution functions (CDFs). Each result was compared with the corresponding theoretical probability density function (PDF) and CDF.
+
+\subsection{Implementation}
+The Python Code and the Output for the Exercise is given below.
+
+\subsubsection{Various Std Values For Normal Distribution}
+The following Code plots the normal distribution for various values of Standard Deviation
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Parameters
+mean = 0
+stds = [1, 0.5, 2, 3]
+colors = ['blue', 'green', 'red', 'purple']
+labels = [f'std = {s}' for s in stds]
+
+x = np.linspace(-10, 10, 1000)
+
+plt.figure(figsize=(10, 6))
+
+for std, color, label in zip(stds, colors, labels):
+    y = norm.pdf(x, mean, std)
+    plt.plot(x, y, label=label, color=color)
+
+plt.title('Normal Distributions with Mean = 0 and Different Standard Deviations')
+plt.xlabel('x')
+plt.ylabel('Probability Density')
+plt.legend()
+plt.grid(True)
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 4/Different Std Normal Distribution.png}
+	\caption{Plot for Normal Distribution with various Std}
+	\label{fig:differentstdplot}
+\end{figure}
+
+\subsubsection{Finding PPF}
+This can be used to find the ppf of the given range using scipy
+
+\begin{lstlisting}[language=Python]
+from scipy.stats import norm
+
+# Central 95% interval
+lower = norm.ppf(0.025)  # -x1
+upper = norm.ppf(0.975)  # x1
+
+print(f"x1 = {upper:.4f}, -x1 = {lower:.4f}")
+
+# Central 99% interval
+lower = norm.ppf(0.005) # -x2
+upper = norm.ppf(0.995) # x2
+
+print(f"x2 = {upper:.4f}, -x2 = {lower:.4f}")
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 4/ppf.png}
+	\caption{PPF for center 95\% and 99\% in standard distribution}
+	\label{fig:ppf}
+\end{figure}
+
+\subsubsection{Random Values for Uniform Distribution}
+The following code generates 1000 values using the uniform.rvs function in scipy and plot the PMF and CDF
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import uniform
+
+# Parameters for the uniform distribution
+a = 0  # lower bound
+b = 10  # upper bound
+n_samples = 1000
+
+# Generate random numbers from a uniform distribution
+random_numbers = uniform.rvs(loc=a, scale=b-a, size=n_samples)
+
+# Plot histogram (PDF) and theoretical PDF
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+count, bins, ignored = plt.hist(random_numbers, bins=30, color='skyblue', edgecolor='black', density=True, alpha=0.6, label='Empirical PDF')
+
+# Theoretical PDF
+x = np.linspace(min(bins), max(bins), 1000)
+pdf = uniform.pdf(x, loc=a, scale=b-a)
+plt.plot(x, pdf, 'r-', lw=2, label='Theoretical PDF')
+plt.title('Uniform Distribution (a=0, b=10)')
+plt.xlabel('Value')
+plt.ylabel('Density')
+plt.legend()
+
+# Plot empirical CDF and theoretical CDF
+plt.subplot(1, 2, 2)
+sorted_numbers = np.sort(random_numbers)
+cdf_empirical = np.arange(1, n_samples + 1) / n_samples
+plt.plot(sorted_numbers, cdf_empirical, marker='.', linestyle='none', label='Empirical CDF')
+
+# Theoretical CDF
+cdf_theoretical = uniform.cdf(x, loc=a, scale=b-a)
+plt.plot(x, cdf_theoretical, 'r-', lw=2, label='Theoretical CDF')
+plt.title('CDF of Uniform Distribution (a=0, b=10)')
+plt.xlabel('Value')
+plt.ylabel('CDF')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 4/Uniform Distribution PMF CDF.png}
+	\caption{Plot for PMF and CDF of Uniform Distribution}
+	\label{fig:uniformpmfcdf}
+\end{figure}
+
+\subsubsection{Random Values for Normal Distribution}
+The following code generates 1000 values using the norm.rvs function in scipy and plot the PMF and CDF
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm
+
+# Parameters for the normal distribution
+mu = 50  # mean
+sigma = 15  # standard deviation
+n_samples = 1000
+
+# Generate random numbers from a normal distribution
+random_numbers = norm.rvs(loc=mu, scale=sigma, size=n_samples)
+
+# Plot histogram (PDF) and theoretical PDF
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+count, bins, ignored = plt.hist(random_numbers, bins=30, color='skyblue', edgecolor='black', density=True, alpha=0.6, label='Empirical PDF')
+
+# Theoretical PDF
+x = np.linspace(min(bins), max(bins), 1000)
+pdf = norm.pdf(x, mu, sigma)
+plt.plot(x, pdf, 'r-', lw=2, label='Theoretical PDF')
+plt.title('Normal Distribution (mu=50, sigma=15)')
+plt.xlabel('Value')
+plt.ylabel('Density')
+plt.legend()
+
+# Plot empirical CDF and theoretical CDF
+plt.subplot(1, 2, 2)
+sorted_numbers = np.sort(random_numbers)
+cdf_empirical = np.arange(1, n_samples + 1) / n_samples
+plt.plot(sorted_numbers, cdf_empirical, marker='.', linestyle='none', label='Empirical CDF')
+
+# Theoretical CDF
+cdf_theoretical = norm.cdf(x, mu, sigma)
+plt.plot(x, cdf_theoretical, 'r-', lw=2, label='Theoretical CDF')
+plt.title('CDF of Normal Distribution (mu=50, sigma=15)')
+plt.xlabel('Value')
+plt.ylabel('CDF')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 4/Normal Distribution PMF CDF.png}
+	\caption{Plot for PMF and CDF of Normal Distribution}
+	\label{fig:normalpmfcdf}
+\end{figure}
+
+\subsubsection{Random Values for Exponential Distribution}
+The following code generates 1000 values using the expon.rvs function in scipy and plot the PMF and CDF
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import expon
+
+# Parameters for the exponential distribution
+lambda_param = 0.5  # rate parameter (lambda)
+n_samples = 1000
+
+# Generate random numbers from an exponential distribution
+random_numbers = expon.rvs(scale=1/lambda_param, size=n_samples)
+
+# Plot histogram (PDF) and theoretical PDF
+plt.figure(figsize=(12, 5))
+plt.subplot(1, 2, 1)
+count, bins, ignored = plt.hist(random_numbers, bins=30, color='skyblue', edgecolor='black', density=True, alpha=0.6, label='Empirical PDF')
+
+# Theoretical PDF
+x = np.linspace(0, max(bins), 1000)
+pdf = expon.pdf(x, scale=1/lambda_param)
+plt.plot(x, pdf, 'r-', lw=2, label='Theoretical PDF')
+plt.title('Exponential Distribution (λ=0.5)')
+plt.xlabel('Value')
+plt.ylabel('Density')
+plt.legend()
+
+# Plot empirical CDF and theoretical CDF
+plt.subplot(1, 2, 2)
+sorted_numbers = np.sort(random_numbers)
+cdf_empirical = np.arange(1, n_samples + 1) / n_samples
+plt.plot(sorted_numbers, cdf_empirical, marker='.', linestyle='none', label='Empirical CDF')
+
+# Theoretical CDF
+cdf_theoretical = expon.cdf(x, scale=1/lambda_param)
+plt.plot(x, cdf_theoretical, 'r-', lw=2, label='Theoretical CDF')
+plt.title('CDF of Exponential Distribution (λ=0.5)')
+plt.xlabel('Value')
+plt.ylabel('CDF')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 4/Exponential Distribution PMF CDF.png}
+	\caption{Plot for PMF and CDF of Exponential Distribution}
+	\label{fig:exponentialpmfcdf}
+\end{figure}
+
+\clearpage
+
+\section{Exercise 5}
+
+\subsection{Description}
+This exercise aims to study the distribution of the sum Z = X1 + X2 for different combinations of independent random variables using simulation. Three cases were considered:
+
+\begin{itemize}
+  \item Case 1: X1 and X2 follow Uniform(0,1) distribution
+  \item Case 2: X1 and X2 follow Normal(0,1) distribution
+  \item Case 3: X1 follows Uniform(0,1) and X2 follows Uniform(0,2)
+\end{itemize}
+
+For each case, 100,000 samples were generated to simulate the distribution of Z. The empirical histogram was plotted and compared with the corresponding theoretical probability density function (PDF).
+
+\subsection{Implementation}
+
+The following code generates various values for x1 and x2 and finds the distribution for Z = x1 + x2
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+from scipy.stats import uniform, norm
+
+# Set style for better plots
+plt.style.use('default')
+
+def case1_uniform_uniform():
+    # Random sampling
+    n_samples = 100000
+    x1 = np.random.uniform(0, 1, n_samples)
+    x2 = np.random.uniform(0, 1, n_samples)
+    z = x1 + x2
+    
+    # Theoretical PDF
+    z_theoretical = np.linspace(0, 2, 1000)
+    pdf_theoretical = np.where(z_theoretical <= 1, z_theoretical, 2 - z_theoretical)
+    
+    # Plotting
+    plt.figure(figsize=(10, 6))
+    
+    # Histogram vs theoretical
+    plt.hist(z, bins=50, density=True, alpha=0.7, label='Simulation')
+    plt.plot(z_theoretical, pdf_theoretical, 'r-', linewidth=2, label='Theoretical PDF')
+    plt.xlabel('Z = X1 + X2')
+    plt.ylabel('Density')
+    plt.title('Case 1: Uniform + Uniform')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.show()
+    
+
+
+def case2_normal_normal():
+    # Random sampling
+    n_samples = 100000
+    x1 = np.random.normal(0, 1, n_samples)
+    x2 = np.random.normal(0, 1, n_samples)
+    z = x1 + x2
+    
+    # Theoretical PDF
+    z_theoretical = np.linspace(-6, 6, 1000)
+    pdf_theoretical = stats.norm.pdf(z_theoretical, 0, np.sqrt(2))
+    
+    # Plotting
+    plt.figure(figsize=(10, 6))
+    
+    # Histogram vs theoretical
+    plt.hist(z, bins=50, density=True, alpha=0.7, label='Simulation')
+    plt.plot(z_theoretical, pdf_theoretical, 'r-', linewidth=2, label='Theoretical PDF')
+    plt.xlabel('Z = X1 + X2')
+    plt.ylabel('Density')
+    plt.title('Case 2: Normal + Normal')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.show()
+    
+
+
+def case3_uniform_different():
+    # Random sampling
+    n_samples = 100000
+    x1 = np.random.uniform(0, 1, n_samples)
+    x2 = np.random.uniform(0, 2, n_samples)
+    z = x1 + x2
+    
+    # Theoretical PDF
+    z_theoretical = np.linspace(0, 3, 1000)
+    pdf_theoretical = np.where(z_theoretical <= 1, z_theoretical/2,
+                              np.where(z_theoretical <= 2, 0.5, (3-z_theoretical)/2))
+    
+    # Plotting
+    plt.figure(figsize=(10, 6))
+    
+    # Histogram vs theoretical
+    plt.hist(z, bins=50, density=True, alpha=0.7, label='Simulation')
+    plt.plot(z_theoretical, pdf_theoretical, 'r-', linewidth=2, label='Theoretical PDF')
+    plt.xlabel('Z = X1 + X2')
+    plt.ylabel('Density')
+    plt.title('Case 3: Uniform[0,1] + Uniform[0,2]')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.show()
+    
+
+
+def theoretical_analysis():
+    """Theoretical analysis for all cases"""
+    pass
+
+if __name__ == "__main__":
+    # Set random seed for reproducibility
+    np.random.seed(42)
+    
+    # Run simulations for each case
+    case1_uniform_uniform()
+    case2_normal_normal()
+    case3_uniform_different()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 5/PDF Uniform 01+01.png}
+	\caption{PDF of Z = x1 + x2 where x1 and x2 lie between [0,1] in Uniform Distribution}
+	\label{fig:uniformpdf0101}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 5/PDF Normal 01+01.png}
+	\caption{PDF of Z = x1 + x2 where x1 and x2 lie between [0,1] in Normal Distribution}
+	\label{fig:normalpdf0101}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 5/PDF Uniform 01+02.png}
+	\caption{PDF of Z = x1 + x2 where x1 and x2 lie between [0,1] and [0,2] in Uniform Distribution}
+	\label{fig:uniformpdf0102}
+\end{figure}
+
+\clearpage
+
+\section{Exercise 6}
+
+\subsection{Description}
+The goal of this exercise is to perform comprehensive statistical analysis and comparison of various probability distributions using Python. The exercise involves analyzing both discrete and continuous probability distributions by generating random samples and comparing empirical statistics with theoretical values. Five different distributions were examined: Binomial ($n=10$, $p=0.5$), Poisson ($\lambda=5$), Exponential ($\lambda=1$), Normal ($\mu=0$, $\sigma=1$), and Uniform ($0,1$). For each distribution, 1000 random values were generated using \texttt{scipy.stats}, and the mean, median, and mode were calculated and compared with their theoretical counterparts. Additionally, a real-world dataset analysis was performed on a sample of people data containing height, weight, age, and salary information, where statistical measures including mean, median, mode, minimum, maximum, and standard deviation were computed for each numerical column. The exercise demonstrates the relationship between empirical and theoretical statistical measures across different distribution types, providing insights into the behavior and characteristics of various probability distributions.
+
+
+\subsection{Implementation}
+Given below is the code used to find the mean, median and mode for the discrete dataset and the generated continuous values.
+
+\subsubsection{Discrete Dataset}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|l|c|c|c|r|}
+		\hline
+		\textbf{No.} & \textbf{Name} & \textbf{Height} & \textbf{Weight} & \textbf{Age} & \textbf{Salary} \\
+		\hline
+		1            & Alice         & 165             & 60              & 28           & 273000          \\
+		2            & Bob           & 175             & 82              & 30           & 112000          \\
+		3            & Charlie       & 168             & 75              & 29           & 257000          \\
+		4            & David         & 180             & 90              & 30           & 188000          \\
+		5            & Eve           & 158             & 55              & 25           & 52000           \\
+		\hline
+	\end{tabular}
+	\caption{First five entries from the dataset}
+	\label{tab:first5data2}
+\end{table}
+
+\begin{lstlisting}[language=Python]
+import pandas as pd
+import numpy as np
+from statistics import mode, StatisticsError
+from collections import Counter
+
+def analyze_numerical_data(data, column_name):
+    values = data[column_name].dropna()
+    
+    mean_val = values.mean()
+    median_val = values.median()
+    
+    try:
+        mode_val = mode(values)
+    except StatisticsError:
+        mode_val = values.mode().iloc[0] if not values.mode().empty else "No unique mode"
+    
+    return mean_val, median_val, mode_val
+
+def main():
+    try:
+        df = pd.read_csv('Foundations of Data Engineering\Ex 6\sample_people.csv')
+        print("Data loaded successfully!")
+        print(f"Dataset shape: {df.shape}")
+        print("\nFirst few rows of the data:")
+        print(df.head())
+        print("\n" + "="*50)
+        
+        columns_to_analyze = ['height', 'weight', 'age', 'salary']
+        
+        print("STATISTICAL ANALYSIS")
+        print("="*50)
+        
+        for column in columns_to_analyze:
+            print(f"\n{column.upper()} ANALYSIS:")
+            print("-" * 30)
+            
+            mean_val, median_val, mode_val = analyze_numerical_data(df, column)
+            
+            print(f"Mean: {mean_val:.2f}")
+            print(f"Median: {median_val:.2f}")
+            print(f"Mode: {mode_val}")
+            
+            print(f"Min: {df[column].min()}")
+            print(f"Max: {df[column].max()}")
+            print(f"Standard Deviation: {df[column].std():.2f}")
+        
+        print("\n" + "="*50)
+        print("SUMMARY:")
+        print("="*50)
+        
+        summary_data = []
+        for column in columns_to_analyze:
+            mean_val, median_val, mode_val = analyze_numerical_data(df, column)
+            summary_data.append({
+                'Column': column.capitalize(),
+                'Mean': f"{mean_val:.2f}",
+                'Median': f"{median_val:.2f}",
+                'Mode': str(mode_val),
+                'Min': df[column].min(),
+                'Max': df[column].max()
+            })
+        
+        summary_df = pd.DataFrame(summary_data)
+        print(summary_df.to_string(index=False))
+        
+    except FileNotFoundError:
+        print("Error: sample_people.csv file not found!")
+        print("Make sure the file is in the same directory as this script.")
+    except Exception as e:
+        print(f"Error: {e}")
+
+if __name__ == "__main__":
+    main() 
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 6/Discrete MMM.png}
+	\caption{Mean, Median and Mode of the Discrete Dataset}
+	\label{fig:discretemmm}
+\end{figure}
+
+\subsubsection{Uniform Distribution}
+The code given below is used to generate 1000 values using scipy in uniform distribution and find the actual mean, median and mode and compare it with the theoretical mean, median and mode.
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import scipy.stats as stats
+
+uniform_data = stats.uniform.rvs(size=1000)
+
+print("Uniform Distribution Analysis")
+print("=" * 40)
+print(f"Generated {len(uniform_data)} values from Uniform distribution (0, 1)")
+print()
+
+mean_value = np.mean(uniform_data)
+print(f"Mean: {mean_value:.4f}")
+
+median_value = np.median(uniform_data)
+print(f"Median: {median_value:.4f}")
+
+hist, bin_edges = np.histogram(uniform_data, bins=20)
+mode_bin_index = np.argmax(hist)
+mode_value = (bin_edges[mode_bin_index] + bin_edges[mode_bin_index + 1]) / 2
+print(f"Mode (approximate): {mode_value:.4f}")
+
+print()
+print("Theoretical values for Uniform(0,1):")
+print(f"Theoretical Mean: 0.5")
+print(f"Theoretical Median: 0.5")
+print(f"Theoretical Mode: Any value in [0,1] (uniform distribution has no unique mode)")
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 6/Uniform MMM.png}
+	\caption{Mean, Median and Mode of the Uniform Distribution}
+	\label{fig:uniformmmm}
+\end{figure}
+
+\subsubsection{Normal Distribution}
+The code given below is used to generate 1000 values using scipy in normal distribution and find the actual mean, median and mode and compare it with the theoretical mean, median and mode.
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import scipy.stats as stats
+
+normal_data = stats.norm.rvs(size=1000)
+
+print("Normal Distribution Analysis")
+print("=" * 40)
+print(f"Generated {len(normal_data)} values from Normal distribution (μ=0, σ=1)")
+print()
+
+mean_value = np.mean(normal_data)
+print(f"Mean: {mean_value:.4f}")
+
+median_value = np.median(normal_data)
+print(f"Median: {median_value:.4f}")
+
+hist, bin_edges = np.histogram(normal_data, bins=20)
+mode_bin_index = np.argmax(hist)
+mode_value = (bin_edges[mode_bin_index] + bin_edges[mode_bin_index + 1]) / 2
+print(f"Mode (approximate): {mode_value:.4f}")
+
+print()
+print("Theoretical values for Normal(0,1):")
+print(f"Theoretical Mean: 0.0")
+print(f"Theoretical Median: 0.0")
+print(f"Theoretical Mode: 0.0")
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 6/Normal MMM.png}
+	\caption{Mean, Median and Mode of the Normal Distribution}
+	\label{fig:normalmmm}
+\end{figure}
+
+\subsubsection{Exponential Distribution}
+The code given below is used to generate 1000 values using scipy in exponential distribution and find the actual mean, median and mode and compare it with the theoretical mean, median and mode.
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import scipy.stats as stats
+
+exponential_data = stats.expon.rvs(size=1000)
+
+print("Exponential Distribution Analysis")
+print("=" * 40)
+print(f"Generated {len(exponential_data)} values from Exponential distribution (λ=1)")
+print()
+
+mean_value = np.mean(exponential_data)
+print(f"Mean: {mean_value:.4f}")
+
+median_value = np.median(exponential_data)
+print(f"Median: {median_value:.4f}")
+
+hist, bin_edges = np.histogram(exponential_data, bins=20)
+mode_bin_index = np.argmax(hist)
+mode_value = (bin_edges[mode_bin_index] + bin_edges[mode_bin_index + 1]) / 2
+print(f"Mode (approximate): {mode_value:.4f}")
+
+print()
+print("Theoretical values for Exponential(λ=1):")
+print(f"Theoretical Mean: 1.0")
+print(f"Theoretical Median: ln(2) ≈ 0.693")
+print(f"Theoretical Mode: 0.0")
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 6/Exponential MMM.png}
+	\caption{Mean, Median and Mode of the Exponential Distribution}
+	\label{fig:exponentialmmm}
+\end{figure}
+
+\subsubsection{Binomial Distribution}
+The code given below is used to generate 1000 values using scipy in binomial distribution and find the actual mean, median and mode and compare it with the theoretical mean, median and mode.
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import scipy.stats as stats
+from collections import Counter
+
+n_trials = 10
+p_success = 0.5
+binomial_data = stats.binom.rvs(n=n_trials, p=p_success, size=1000)
+
+print("Binomial Distribution Analysis")
+print("=" * 40)
+print(f"Generated {len(binomial_data)} values from Binomial distribution (n={n_trials}, p={p_success})")
+print()
+
+mean_value = np.mean(binomial_data)
+print(f"Mean: {mean_value:.4f}")
+
+median_value = np.median(binomial_data)
+print(f"Median: {median_value:.4f}")
+
+counter = Counter(binomial_data)
+mode_value = counter.most_common(1)[0][0]
+mode_frequency = counter.most_common(1)[0][1]
+print(f"Mode: {mode_value} (appears {mode_frequency} times)")
+
+print()
+print("Theoretical values for Binomial(n=10, p=0.5):")
+print(f"Theoretical Mean: n*p = {n_trials * p_success}")
+print(f"Theoretical Median: ≈ {n_trials * p_success:.1f}")
+print(f"Theoretical Mode: ≈ {n_trials * p_success:.1f}")
+
+print()
+print("Value frequency distribution:")
+for value, count in sorted(counter.items()):
+    print(f"Value {value}: {count} times") 
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Experiment 6/Binomial MMM.png}
+	\caption{Mean, Median and Mode of the Binomial Distribution}
+	\label{fig:binomialmmm}
+\end{figure}
+
+\subsubsection{Poisson Distribution}
+The code given below is used to generate 1000 values using scipy in poisson distribution and find the actual mean, median and mode and compare it with the theoretical mean, median and mode.
+
+\begin{lstlisting}[language=Python]
+import numpy as np
+import scipy.stats as stats
+from collections import Counter
+
+lambda_param = 5
+poisson_data = stats.poisson.rvs(mu=lambda_param, size=1000)
+
+print("Poisson Distribution Analysis")
+print("=" * 40)
+print(f"Generated {len(poisson_data)} values from Poisson distribution (λ={lambda_param})")
+print()
+
+mean_value = np.mean(poisson_data)
+print(f"Mean: {mean_value:.4f}")
+
+median_value = np.median(poisson_data)
+print(f"Median: {median_value:.4f}")
+
+counter = Counter(poisson_data)
+mode_value = counter.most_common(1)[0][0]
+mode_frequency = counter.most_common(1)[0][1]
+print(f"Mode: {mode_value} (appears {mode_frequency} times)")
+
+print()
+print("Theoretical values for Poisson(λ=5):")
+print(f"Theoretical Mean: λ = {lambda_param}")
+print(f"Theoretical Median: ≈ {lambda_param:.1f}")
+print(f"Theoretical Mode: ≈ {lambda_param:.1f}")
+
+print()
+print("Value frequency distribution:")
+for value, count in sorted(counter.items()):
+    print(f"Value {value}: {count} times") 
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{Experiment 6/Poisson MMM.png}
+	\caption{Mean, Median and Mode of the Poisson Distribution}
+	\label{fig:poissonmmm}
+\end{figure}
+
+\clearpage
+
+\section{Exercise 7}
+
+\subsection{Description}
+n this exercise, we work with a dataset of cars containing various features such as engine capacity (CC), horsepower, top speed, price, and other related attributes. The goal is to perform statistical analysis on these features by:
+
+\begin{itemize}
+    \item Calculating the \textbf{Probability Density Function (PDF)} to understand how each feature’s values are distributed.
+    \item Computing the \textbf{Cumulative Distribution Function (CDF)} to analyze the probability of a feature taking on a value less than or equal to a given threshold.
+    \item Determining key \textbf{descriptive statistics} including the \textbf{mean}, \textbf{median}, and \textbf{mode} for each feature to summarize the central tendency and common values in the dataset.
+\end{itemize}
+
+Through this analysis, we gain insights into the distribution patterns, typical values, and spread of the car-related features.
+
+\subsection{Implementation}
+The Implementation of analyzing the dataset to find its distribution and central tendencies is given below.
+
+\subsubsection{Dataset Used}
+The following Tables shows the first 5 entries in the dataset.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|l|l|c|c|c|}
+		\hline
+		\textbf{No.} & \textbf{Company} & \textbf{Car Name} & \textbf{Engine} & \textbf{CC/Battery} & \textbf{HorsePower} \\
+		\hline
+		1 & FERRARI & SF90 STRADALE & V8 & 3990 cc & 963 hp \\
+		2 & ROLLS ROYCE & PHANTOM & V12 & 6749 cc & 563 hp \\
+		3 & Ford & KA+ & 1.2L Petrol & 1,200 cc & 70--85 hp \\
+		4 & MERCEDES & GT 63 S & V8 & 3,982 cc & 630 hp \\
+		5 & AUDI & AUDI R8 Gt & V10 & 5,204 cc & 602 hp \\
+		\hline
+	\end{tabular}
+	\caption{First five entries from the car dataset – Basic details}
+	\label{tab:first5data_basic}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|l|c|}
+		\hline
+		\textbf{No.} & \textbf{Top Speed} & \textbf{0-100 km/h} & \textbf{Price} & \textbf{Fuel Type} & \textbf{Torque} \\
+		\hline
+		1 & 340 km/h & 2.5 sec & \$1,100,000 & Plug-in Hybrid & 800 Nm \\
+		2 & 250 km/h & 5.3 sec & \$460,000 & Petrol & 900 Nm \\
+		3 & 165 km/h & 10.5 sec & \$12,000--\$15,000 & Petrol & 100--140 Nm \\
+		4 & 250 km/h & 3.2 sec & \$161,000 & Petrol & 900 Nm \\
+		5 & 320 km/h & 3.6 sec & \$253,290 & Petrol & 560 Nm \\
+		\hline
+	\end{tabular}
+	\caption{First five entries from the car dataset – Performance and pricing}
+	\label{tab:first5data_perf}
+\end{table}
+
+\subsubsection{Importing Libraries and Reading Dataset}
+
+\begin{lstlisting}[language=Python]
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+import re
+import warnings
+
+warnings.filterwarnings('ignore')
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+df = pd.read_csv('Dataset.csv')
+
+print(df.shape)
+df.head()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 7/First 5 Values.png}
+	\caption{First 5 Entries from the table}
+	\label{fig:tablefirst5}
+\end{figure}
+
+\subsubsection{Cleaning The Dataset}
+
+\begin{lstlisting}[language=Python]
+df_cleaned = df.dropna()
+
+cc_pattern_mask = df_cleaned['CC/Battery Capacity'].str.match(r'^\d+(?:,\d+)* cc$', na=False)
+df_cleaned = df_cleaned[cc_pattern_mask]
+
+df_cleaned['CC'] = df_cleaned['CC/Battery Capacity'].str.replace(',', '').str.replace(' cc', '').astype(int)
+df_cleaned = df_cleaned[df_cleaned['CC'] <= 8000]
+
+def clean_horsepower(value):
+    if pd.isna(value):
+        return value
+    
+    value_str = str(value).strip()
+    
+    # Handle ranges like "70-85 hp"
+    range_match = re.search(r'(\d+)\s*-\s*(\d+)\s*hp', value_str, re.IGNORECASE)
+    if range_match:
+        return int((int(range_match.group(1)) + int(range_match.group(2))) / 2)
+    
+    # Handle single values like "963 hp"
+    single_match = re.search(r'(\d+)\s*hp', value_str, re.IGNORECASE)
+    if single_match:
+        return int(single_match.group(1))
+    
+    return value
+
+df_cleaned['HorsePower'] = df_cleaned['HorsePower'].apply(clean_horsepower)
+
+df_cleaned['Total Speed'] = df_cleaned['Total Speed'].str.replace(' km/h', '').astype(int)
+
+df_cleaned['Performance(0 - 100 )KM/H'] = df_cleaned['Performance(0 - 100 )KM/H'].str.replace(' sec', '').astype(float)
+
+def clean_price(value):
+    if pd.isna(value):
+        return value
+    
+    value_str = str(value).strip()
+    
+    # Handle ranges like "$12,000-$15,000"
+    range_match = re.search(r'\$([\d,]+)\s*-\s*\$?([\d,]+)', value_str)
+    if range_match:
+        num1 = int(range_match.group(1).replace(',', ''))
+        num2 = int(range_match.group(2).replace(',', ''))
+        return int((num1 + num2) / 2)
+    
+    # Handle single values like "$1,100,000"
+    single_match = re.search(r'\$([\d,]+)', value_str)
+    if single_match:
+        return int(single_match.group(1).replace(',', ''))
+    
+    return value
+
+df_cleaned['Cars Prices'] = df_cleaned['Cars Prices'].apply(clean_price)
+df_cleaned = df_cleaned[df_cleaned['Cars Prices'] <= 1500000]
+
+def clean_torque(value):
+    if pd.isna(value):
+        return value
+    
+    value_str = str(value).strip()
+    
+    # Handle ranges like "100 - 140 Nm"
+    range_match = re.search(r'(\d+)\s*-\s*(\d+)\s*Nm', value_str, re.IGNORECASE)
+    if range_match:
+        num1 = int(range_match.group(1))
+        num2 = int(range_match.group(2))
+        return int((num1 + num2) / 2)
+    
+    # Handle single values like "900 Nm"
+    single_match = re.search(r'(\d+)\s*Nm', value_str, re.IGNORECASE)
+    if single_match:
+        return int(single_match.group(1))
+    
+    return value
+
+df_cleaned['Torque'] = df_cleaned['Torque'].apply(clean_torque)
+
+df_cleaned = df_cleaned.drop('Engines', axis=1)
+df_cleaned = df_cleaned.drop('CC/Battery Capacity', axis=1)
+df_cleaned = df_cleaned.drop('Fuel Types', axis=1)
+
+print(df_cleaned.shape)
+df_cleaned.head()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{Experiment 7/First 5 Cleaned.png}
+	\caption{First 5 Entries from the Cleaned and Preprocessed Table}
+	\label{fig:5cleanedpreprocessed}
+\end{figure}
+
+\subsubsection{Engine Displacement Statistics}
+
+\begin{lstlisting}[language=Python]
+# Calculate statistics
+mean_cc = df_cleaned['CC'].mean()
+median_cc = df_cleaned['CC'].median()
+mode_cc = df_cleaned['CC'].mode().iloc[0] if not df_cleaned['CC'].mode().empty else None
+
+print(f"Mean: {mean_cc:.2f}")
+print(f"Median: {median_cc:.2f}")
+print(f"Mode: {mode_cc:.2f}")
+
+# Create figure with subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
+
+# Plot PDF (Histogram)
+ax1.hist(df_cleaned['CC'], bins=30, alpha=0.7, color='skyblue', edgecolor='black')
+ax1.set_title('Probability Density Function (PDF)')
+ax1.set_xlabel('CC Values')
+ax1.set_ylabel('Density')
+ax1.axvline(mean_cc, color='red', linestyle='--', label=f'Mean: {mean_cc:.2f}')
+ax1.axvline(median_cc, color='green', linestyle='--', label=f'Median: {median_cc:.2f}')
+ax1.axvline(mode_cc, color='orange', linestyle='--', label=f'Mode: {mode_cc:.2f}')
+ax1.legend()
+ax1.ticklabel_format(style='plain', axis='x')
+
+# Plot CDF
+sorted_cc = np.sort(df_cleaned['CC'])
+y = np.arange(1, len(sorted_cc) + 1) / len(sorted_cc)
+ax2.plot(sorted_cc, y, linewidth=2, color='blue')
+ax2.set_title('Cumulative Distribution Function (CDF)')
+ax2.set_xlabel('CC Values')
+ax2.set_ylabel('Cumulative Probability')
+ax2.axvline(mean_cc, color='red', linestyle='--', label=f'Mean: {mean_cc:.2f}')
+ax2.axvline(median_cc, color='green', linestyle='--', label=f'Median: {median_cc:.2f}')
+ax2.axvline(mode_cc, color='orange', linestyle='--', label=f'Mode: {mode_cc:.2f}')
+ax2.legend()
+ax2.ticklabel_format(style='plain', axis='x')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Experiment 7/Engine Displacement MMM.png}
+	\caption{Mean, Median and Mode of Engine Displacement}
+	\label{fig:enginedisplacementmmm}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{Experiment 7/Engine Displacement PDF CDF.png}
+	\caption{PDF and CDF of Engine Displacement}
+	\label{fig:enginedisplacementpdfcdf}
+\end{figure}
+
+\subsubsection{HorsePower Statistics}
+
+\begin{lstlisting}[language=Python]
+# Calculate statistics
+mean_horsepower = df_cleaned['HorsePower'].mean()
+median_horsepower = df_cleaned['HorsePower'].median()
+mode_horsepower = df_cleaned['HorsePower'].mode().iloc[0] if not df_cleaned['HorsePower'].mode().empty else None
+
+print(f"Mean: {mean_horsepower:.2f}")
+print(f"Median: {median_horsepower:.2f}")
+print(f"Mode: {mode_horsepower:.2f}")
+
+# Create figure with subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
+
+# Plot PDF (Histogram)
+ax1.hist(df_cleaned['HorsePower'], bins=800, alpha=0.7, color='skyblue', edgecolor='black')
+ax1.set_title('Probability Density Function (PDF)')
+ax1.set_xlabel('HorsePower Values')
+ax1.set_ylabel('Density')
+ax1.axvline(mean_horsepower, color='red', linestyle='--', linewidth=0.8, alpha=0.7, label=f'Mean: {mean_horsepower:.2f}')
+ax1.axvline(median_horsepower, color='green', linestyle='--', linewidth=0.8, alpha=0.7, label=f'Median: {median_horsepower:.2f}')
+ax1.axvline(mode_horsepower, color='orange', linestyle='--', linewidth=0.8, alpha=0.7, label=f'Mode: {mode_horsepower:.2f}')
+ax1.legend()
+ax1.ticklabel_format(style='plain', axis='x')
+
+# Plot CDF
+sorted_horsepower = np.sort(df_cleaned['HorsePower'])
+y = np.arange(1, len(sorted_horsepower) + 1) / len(sorted_horsepower)
+ax2.plot(sorted_horsepower, y, linewidth=2, color='blue')
+ax2.set_title('Cumulative Distribution Function (CDF)')
+ax2.set_xlabel('HorsePower Values')
+ax2.set_ylabel('Cumulative Probability')
+ax2.axvline(mean_horsepower, color='red', linestyle='--', label=f'Mean: {mean_horsepower:.2f}')
+ax2.axvline(median_horsepower, color='green', linestyle='--', label=f'Median: {median_horsepower:.2f}')
+ax2.axvline(mode_horsepower, color='orange', linestyle='--', label=f'Mode: {mode_horsepower:.2f}')
+ax2.legend()
+ax2.ticklabel_format(style='plain', axis='x')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Experiment 7/HorsePower MMM.png}
+	\caption{Mean, Median and Mode of HorsePower}
+	\label{fig:horsepowermmm}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{Experiment 7/Horsepower PDF CDF.png}
+	\caption{PDF and CDF of HorsePower}
+	\label{fig:horsepowerpdfcdf}
+\end{figure}
+
+\subsubsection{Top Speed Statistics}
+
+\begin{lstlisting}[language=Python]
+# Calculate statistics
+mean_speed = df_cleaned['Total Speed'].mean()
+median_speed = df_cleaned['Total Speed'].median()
+mode_speed = df_cleaned['Total Speed'].mode().iloc[0] if not df_cleaned['Total Speed'].mode().empty else None
+
+print(f"Mean: {mean_speed:.2f}")
+print(f"Median: {median_speed:.2f}")
+print(f"Mode: {mode_speed:.2f}")
+
+# Create figure with subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
+
+# Plot PDF (Histogram)
+ax1.hist(df_cleaned['Total Speed'], bins=100, alpha=0.7, color='skyblue', edgecolor='black')
+ax1.set_title('Probability Density Function (PDF)')
+ax1.set_xlabel('Total Speed Values')
+ax1.set_ylabel('Density')
+ax1.axvline(mean_speed, color='red', linestyle='--', label=f'Mean: {mean_speed:.2f}')
+ax1.axvline(median_speed, color='green', linestyle='--', label=f'Median: {median_speed:.2f}')
+ax1.axvline(mode_speed, color='orange', linestyle='--', label=f'Mode: {mode_speed:.2f}')
+ax1.legend()
+ax1.ticklabel_format(style='plain', axis='x')
+
+# Plot CDF
+sorted_speed = np.sort(df_cleaned['Total Speed'])
+y = np.arange(1, len(sorted_speed) + 1) / len(sorted_speed)
+ax2.plot(sorted_speed, y, linewidth=2, color='blue')
+ax2.set_title('Cumulative Distribution Function (CDF)')
+ax2.set_xlabel('Total Speed Values')
+ax2.set_ylabel('Cumulative Probability')
+ax2.axvline(mean_speed, color='red', linestyle='--', label=f'Mean: {mean_speed:.2f}')
+ax2.axvline(median_speed, color='green', linestyle='--', label=f'Median: {median_speed:.2f}')
+ax2.axvline(mode_speed, color='orange', linestyle='--', label=f'Mode: {mode_speed:.2f}')
+ax2.legend()
+ax2.ticklabel_format(style='plain', axis='x')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Experiment 7/Top Speed MMM.png}
+	\caption{Mean, Median and Mode of Top Speed}
+	\label{fig:topspeedmmm}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{Experiment 7/Top Speed PDF CDF.png}
+	\caption{PDF and CDF of Top Speed}
+	\label{fig:topspeedpdfcdf}
+\end{figure}
+
+\subsubsection{Performance Statistics}
+
+\begin{lstlisting}[language=Python]
+# Calculate statistics
+mean_performance = df_cleaned['Performance(0 - 100 )KM/H'].mean()
+median_performance = df_cleaned['Performance(0 - 100 )KM/H'].median()
+mode_performance = df_cleaned['Performance(0 - 100 )KM/H'].mode().iloc[0] if not df_cleaned['Performance(0 - 100 )KM/H'].mode().empty else None
+
+print(f"Mean: {mean_performance:.2f}")
+print(f"Median: {median_performance:.2f}")
+print(f"Mode: {mode_performance:.2f}")
+
+# Create figure with subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
+
+# Plot PDF (Histogram)
+ax1.hist(df_cleaned['Performance(0 - 100 )KM/H'], bins=500, alpha=0.7, color='skyblue', edgecolor='black')
+ax1.set_title('Probability Density Function (PDF)')
+ax1.set_xlabel('Performance(0 - 100 )KM/H Values')
+ax1.set_ylabel('Density')
+ax1.axvline(mean_performance, color='red', linestyle='--', linewidth=0.8, alpha=0.7, label=f'Mean: {mean_performance:.2f}')
+ax1.axvline(median_performance, color='green', linestyle='--', linewidth=0.8, alpha=0.7, label=f'Median: {median_performance:.2f}')
+ax1.axvline(mode_performance, color='orange', linestyle='--', linewidth=0.8, alpha=0.7, label=f'Mode: {mode_performance:.2f}')
+ax1.legend()
+ax1.ticklabel_format(style='plain', axis='x')
+
+# Plot CDF
+sorted_performance = np.sort(df_cleaned['Performance(0 - 100 )KM/H'])
+y = np.arange(1, len(sorted_performance) + 1) / len(sorted_performance)
+ax2.plot(sorted_performance, y, linewidth=2, color='blue')
+ax2.set_title('Cumulative Distribution Function (CDF)')
+ax2.set_xlabel('Performance(0 - 100 )KM/H Values')
+ax2.set_ylabel('Cumulative Probability')
+ax2.axvline(mean_performance, color='red', linestyle='--', label=f'Mean: {mean_performance:.2f}')
+ax2.axvline(median_performance, color='green', linestyle='--', label=f'Median: {median_performance:.2f}')
+ax2.axvline(mode_performance, color='orange', linestyle='--', label=f'Mode: {mode_performance:.2f}')
+ax2.legend()
+ax2.ticklabel_format(style='plain', axis='x')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Experiment 7/Performance MMM.png}
+	\caption{Mean, Median and Mode of Performance}
+	\label{fig:performancemmm}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{Experiment 7/Performance PDF CDF.png}
+	\caption{PDF and CDF of Performance}
+	\label{fig:performancepdfcdf}
+\end{figure}
+
+\subsubsection{Price Statistics}
+
+\begin{lstlisting}[language=Python]
+# Calculate statistics
+mean_price = df_cleaned['Cars Prices'].mean()
+median_price = df_cleaned['Cars Prices'].median()
+mode_price = df_cleaned['Cars Prices'].mode().iloc[0] if not df_cleaned['Cars Prices'].mode().empty else None
+
+print(f"Mean: {mean_price:.2f}")
+print(f"Median: {median_price:.2f}")
+print(f"Mode: {mode_price:.2f}")
+
+# Create figure with subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
+
+# Plot PDF (Histogram)
+ax1.hist(df_cleaned['Cars Prices'], bins=100, alpha=0.7, color='skyblue', edgecolor='black')
+ax1.set_title('Probability Density Function (PDF)')
+ax1.set_xlabel('Cars Prices')
+ax1.set_ylabel('Density')
+ax1.axvline(mean_price, color='red', linestyle='--', label=f'Mean: {mean_price:.2f}')
+ax1.axvline(median_price, color='green', linestyle='--', label=f'Median: {median_price:.2f}')
+ax1.axvline(mode_price, color='orange', linestyle='--', label=f'Mode: {mode_price:.2f}')
+ax1.legend()
+ax1.ticklabel_format(style='plain', axis='x')
+
+# Plot CDF
+sorted_price = np.sort(df_cleaned['Cars Prices'])
+y = np.arange(1, len(sorted_price) + 1) / len(sorted_price)
+ax2.plot(sorted_price, y, linewidth=2, color='blue')
+ax2.set_title('Cumulative Distribution Function (CDF)')
+ax2.set_xlabel('Cars Prices')
+ax2.set_ylabel('Cumulative Probability')
+ax2.axvline(mean_price, color='red', linestyle='--', label=f'Mean: {mean_price:.2f}')
+ax2.axvline(median_price, color='green', linestyle='--', label=f'Median: {median_price:.2f}')
+ax2.axvline(mode_price, color='orange', linestyle='--', label=f'Mode: {mode_price:.2f}')
+ax2.legend()
+ax2.ticklabel_format(style='plain', axis='x')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Experiment 7/Price MMM.png}
+	\caption{Mean, Median and Mode of Prices}
+	\label{fig:pricesmmm}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{Experiment 7/Price PDF CDF.png}
+	\caption{PDF and CDF of Prices}
+	\label{fig:pricespdfcdf}
+\end{figure}
+
+\subsubsection{Seats Statistics}
+
+\begin{lstlisting}[language=Python]
+# Calculate statistics
+mean_seats = df_cleaned['Seats'].mean()
+median_seats = df_cleaned['Seats'].median()
+mode_seats = df_cleaned['Seats'].mode().iloc[0] if not df_cleaned['Seats'].mode().empty else None
+
+print(f"Mean: {mean_seats:.2f}")
+print(f"Median: {median_seats:.2f}")
+print(f"Mode: {mode_seats:.2f}")
+
+# Create figure with subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
+
+# Plot PDF (Histogram)
+ax1.hist(df_cleaned['Seats'], bins=30, alpha=0.7, color='skyblue', edgecolor='black')
+ax1.set_title('Probability Density Function (PDF)')
+ax1.set_xlabel('Seats')
+ax1.set_ylabel('Density')
+ax1.axvline(mean_seats, color='red', linestyle='--', label=f'Mean: {mean_seats:.2f}')
+ax1.axvline(median_seats, color='green', linestyle='--', label=f'Median: {median_seats:.2f}')
+ax1.axvline(mode_seats, color='orange', linestyle='--', label=f'Mode: {mode_seats:.2f}')
+ax1.legend()
+ax1.ticklabel_format(style='plain', axis='x')
+
+# Plot CDF
+sorted_seats = np.sort(df_cleaned['Seats'])
+y = np.arange(1, len(sorted_seats) + 1) / len(sorted_seats)
+ax2.plot(sorted_seats, y, linewidth=2, color='blue')
+ax2.set_title('Cumulative Distribution Function (CDF)')
+ax2.set_xlabel('Seats')
+ax2.set_ylabel('Cumulative Probability')
+ax2.axvline(mean_seats, color='red', linestyle='--', label=f'Mean: {mean_seats:.2f}')
+ax2.axvline(median_seats, color='green', linestyle='--', label=f'Median: {median_seats:.2f}')
+ax2.axvline(mode_seats, color='orange', linestyle='--', label=f'Mode: {mode_seats:.2f}')
+ax2.legend()
+ax2.ticklabel_format(style='plain', axis='x')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Experiment 7/Seats MMM.png}
+	\caption{Mean, Median and Mode of Seats}
+	\label{fig:seatsmmm}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{Experiment 7/Seats PDF CDF.png}
+	\caption{PDF and CDF of Seats}
+	\label{fig:seatspdfcdf}
+\end{figure}
+
+\subsubsection{Torque Statistics}
+
+\begin{lstlisting}[language=Python]
+# Calculate statistics
+mean_torque = df_cleaned['Torque'].mean()
+median_torque = df_cleaned['Torque'].median()
+mode_torque = df_cleaned['Torque'].mode().iloc[0] if not df_cleaned['Torque'].mode().empty else None
+
+print(f"Mean: {mean_torque:.2f}")
+print(f"Median: {median_torque:.2f}")
+print(f"Mode: {mode_torque:.2f}")
+
+# Create figure with subplots
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
+
+# Plot PDF (Histogram)
+ax1.hist(df_cleaned['Torque'], bins=100, alpha=0.7, color='skyblue', edgecolor='black')
+ax1.set_title('Probability Density Function (PDF)')
+ax1.set_xlabel('Torque')
+ax1.set_ylabel('Density')
+ax1.axvline(mean_torque, color='red', linestyle='--', label=f'Mean: {mean_torque:.2f}')
+ax1.axvline(median_torque, color='green', linestyle='--', label=f'Median: {median_torque:.2f}')
+ax1.axvline(mode_torque, color='orange', linestyle='--', label=f'Mode: {mode_torque:.2f}')
+ax1.legend()
+ax1.ticklabel_format(style='plain', axis='x')
+
+# Plot CDF
+sorted_torque = np.sort(df_cleaned['Torque'])
+y = np.arange(1, len(sorted_torque) + 1) / len(sorted_torque)
+ax2.plot(sorted_torque, y, linewidth=2, color='blue')
+ax2.set_title('Cumulative Distribution Function (CDF)')
+ax2.set_xlabel('Torque')
+ax2.set_ylabel('Cumulative Probability')
+ax2.axvline(mean_torque, color='red', linestyle='--', label=f'Mean: {mean_torque:.2f}')
+ax2.axvline(median_torque, color='green', linestyle='--', label=f'Median: {median_torque:.2f}')
+ax2.axvline(mode_torque, color='orange', linestyle='--', label=f'Mode: {mode_torque:.2f}')
+ax2.legend()
+ax2.ticklabel_format(style='plain', axis='x')
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Experiment 7/Torque MMM.png}
+	\caption{Mean, Median and Mode of Torque}
+	\label{fig:torquemmm}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{Experiment 7/Torque PDF CDF.png}
+	\caption{PDF and CDF of Torque}
+	\label{fig:torquepdfcdf}
+\end{figure}
+
+\subsubsection{Z-Score Normalization of the Dataset}
+
+\begin{lstlisting}[language=Python]
+# Define the columns to analyze
+columns_to_analyze = ['CC', 'HorsePower', 'Total Speed', 'Performance(0 - 100 )KM/H', 'Cars Prices', 'Seats', 'Torque']
+
+def calculate_statistics(data):
+    """Calculate comprehensive statistics for a dataset"""
+    stats_dict = {}
+    
+    for col in columns_to_analyze:
+        if col in data.columns:
+            col_data = data[col].dropna()
+            
+            stats_dict[col] = {
+                'mean': col_data.mean(),
+                'median': col_data.median(),
+                'mode': col_data.mode().iloc[0] if not col_data.mode().empty else None,
+                'min': col_data.min(),
+                'max': col_data.max(),
+                'range': col_data.max() - col_data.min(),
+                'variance': col_data.var(),
+                'std': col_data.std()
+            }
+    
+    return stats_dict
+
+# Calculate statistics for original data
+original_stats = calculate_statistics(df_cleaned)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+# Create a copy of the cleaned dataset for normalization
+df_normalized = df_cleaned.copy()
+
+# Apply z-score normalization to the specified columns
+for col in columns_to_analyze:
+    if col in df_normalized.columns:
+        mean_val = df_normalized[col].mean()
+        std_val = df_normalized[col].std()
+        df_normalized[f'{col}_normalized'] = (df_normalized[col] - mean_val) / std_val
+
+# Calculate statistics for normalized data
+normalized_stats = {}
+for col in columns_to_analyze:
+    if f'{col}_normalized' in df_normalized.columns:
+        col_data = df_normalized[f'{col}_normalized'].dropna()
+        
+        normalized_stats[col] = {
+            'mean': col_data.mean(),
+            'median': col_data.median(),
+            'mode': col_data.mode().iloc[0] if not col_data.mode().empty else None,
+            'min': col_data.min(),
+            'max': col_data.max(),
+            'range': col_data.max() - col_data.min(),
+            'variance': col_data.var(),
+            'std': col_data.std()
+        }
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+# Display comparison of statistics before and after normalization
+print("=" * 80)
+print("COMPARISON OF STATISTICS: BEFORE vs AFTER Z-SCORE NORMALIZATION")
+print("=" * 80)
+
+for col in columns_to_analyze:
+    if col in original_stats and col in normalized_stats:
+        print(f"\n{col.upper()}")
+        print("-" * 50)
+        
+        print(f"{'Statistic':<15} {'Before':<15} {'After':<15}")
+        print("-" * 45)
+        
+        print(f"{'Mean':<15} {original_stats[col]['mean']:<15.4f} {normalized_stats[col]['mean']:<15.4f}")
+        print(f"{'Median':<15} {original_stats[col]['median']:<15.4f} {normalized_stats[col]['median']:<15.4f}")
+        print(f"{'Mode':<15} {original_stats[col]['mode']:<15.4f} {normalized_stats[col]['mode']:<15.4f}")
+        print(f"{'Min':<15} {original_stats[col]['min']:<15.4f} {normalized_stats[col]['min']:<15.4f}")
+        print(f"{'Max':<15} {original_stats[col]['max']:<15.4f} {normalized_stats[col]['max']:<15.4f}")
+        print(f"{'Range':<15} {original_stats[col]['range']:<15.4f} {normalized_stats[col]['range']:<15.4f}")
+        print(f"{'Variance':<15} {original_stats[col]['variance']:<15.4f} {normalized_stats[col]['variance']:<15.4f}")
+        print(f"{'Std Dev':<15} {original_stats[col]['std']:<15.4f} {normalized_stats[col]['std']:<15.4f}")
+\end{lstlisting}
+
+\begin{verbatim}
+================================================================================
+COMPARISON OF STATISTICS: BEFORE vs AFTER Z-SCORE NORMALIZATION
+================================================================================
+\end{verbatim}
+
+\subsection*{CC}
+\begin{tabular}{lrr}
+\hline
+Statistic & Before & After \\
+\hline
+Mean     & 2943.9530 & -0.0000 \\
+Median   & 2494.0000 & -0.2852 \\
+Mode     & 2000.0000 & -0.5983 \\
+Min      & 360.0000  & -1.6377 \\
+Max      & 7700.0000 & 3.0143 \\
+Range    & 7340.0000 & 4.6520 \\
+Variance & 2489498.7345 & 1.0000 \\
+Std Dev  & 1577.8145 & 1.0000 \\
+\hline
+\end{tabular}
+
+\subsection*{Horsepower}
+\begin{tabular}{lrr}
+\hline
+Statistic & Before & After \\
+\hline
+Mean     & 283.1910 & 0.0000 \\
+Median   & 240.0000 & -0.2540 \\
+Mode     & 355.0000 & 0.4222 \\
+Min      & 26.0000  & -1.5123 \\
+Max      & 1000.0000 & 4.2150 \\
+Range    & 974.0000 & 5.7273 \\
+Variance & 28921.5403 & 1.0000 \\
+Std Dev  & 170.0633 & 1.0000 \\
+\hline
+\end{tabular}
+
+\subsection*{Total Speed}
+\begin{tabular}{lrr}
+\hline
+Statistic & Before & After \\
+\hline
+Mean     & 217.0699 & -0.0000 \\
+Median   & 205.0000 & -0.2472 \\
+Mode     & 250.0000 & 0.6743 \\
+Min      & 80.0000  & -2.8068 \\
+Max      & 362.0000 & 2.9677 \\
+Range    & 282.0000 & 5.7745 \\
+Variance & 2384.9240 & 1.0000 \\
+Std Dev  & 48.8357 & 1.0000 \\
+\hline
+\end{tabular}
+
+\subsection*{Performance (0--100) km/h}
+\begin{tabular}{lrr}
+\hline
+Statistic & Before & After \\
+\hline
+Mean     & 7.7926 & -0.0000 \\
+Median   & 7.5000 & -0.0880 \\
+Mode     & 10.5000 & 0.8145 \\
+Min      & 2.5000 & -1.5922 \\
+Max      & 35.0000 & 8.1849 \\
+Range    & 32.5000 & 9.7770 \\
+Variance & 11.0497 & 1.0000 \\
+Std Dev  & 3.3241 & 1.0000 \\
+\hline
+\end{tabular}
+
+\subsection*{Cars Prices}
+\begin{tabular}{lrr}
+\hline
+Statistic & Before & After \\
+\hline
+Mean     & 79521.7578 & -0.0000 \\
+Median   & 40000.0000 & -0.3090 \\
+Mode     & 30000.0000 & -0.3872 \\
+Min      & 4000.0000  & -0.5904 \\
+Max      & 1300000.0000 & 9.5415 \\
+Range    & 1296000.0000 & 10.1319 \\
+Variance & 16361760196.6623 & 1.0000 \\
+Std Dev  & 127913.0963 & 1.0000 \\
+\hline
+\end{tabular}
+
+\subsection*{Seats}
+\begin{tabular}{lrr}
+\hline
+Statistic & Before & After \\
+\hline
+Mean     & 4.9134 & -0.0000 \\
+Median   & 5.0000 & 0.0608 \\
+Mode     & 5.0000 & 0.0608 \\
+Min      & 1.0000 & -2.7473 \\
+Max      & 12.0000 & 4.9750 \\
+Range    & 11.0000 & 7.7223 \\
+Variance & 2.0291 & 1.0000 \\
+Std Dev  & 1.4245 & 1.0000 \\
+\hline
+\end{tabular}
+
+\subsection*{Torque}
+\begin{tabular}{lrr}
+\hline
+Statistic & Before & After \\
+\hline
+Mean     & 401.9374 & -0.0000 \\
+Median   & 360.0000 & -0.1951 \\
+Mode     & 400.0000 & -0.0090 \\
+Min      & 45.0000  & -1.6605 \\
+Max      & 1234.0000 & 3.8709 \\
+Range    & 1189.0000 & 5.5314 \\
+Variance & 46205.6408 & 1.0000 \\
+Std Dev  & 214.9550 & 1.0000 \\
+\hline
+\end{tabular}\\[1em]
+
+\begin{lstlisting}[language=Python]
+# Create two separate box plots: one for original data and one for normalized data
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 10))
+fig.suptitle('Box Plots: Before vs After Z-Score Normalization', fontsize=16, fontweight='bold')
+
+# Box plot for original (pre-normalized) data
+original_data = [df_cleaned[col].dropna() for col in columns_to_analyze]
+bp1 = ax1.boxplot(original_data, labels=columns_to_analyze, patch_artist=True)
+
+# Color the boxes for original data
+colors1 = ['lightblue'] * len(columns_to_analyze)
+for patch, color in zip(bp1['boxes'], colors1):
+    patch.set_facecolor(color)
+
+ax1.set_title('Before Normalization', fontweight='bold', fontsize=14, pad=20)
+ax1.set_ylabel('Original Values')
+ax1.grid(True, alpha=0.3)
+ax1.tick_params(axis='x', rotation=45)
+
+# Box plot for normalized (post-normalized) data
+normalized_data = [df_normalized[f'{col}_normalized'].dropna() for col in columns_to_analyze]
+bp2 = ax2.boxplot(normalized_data, labels=columns_to_analyze, patch_artist=True)
+
+# Color the boxes for normalized data
+colors2 = ['lightgreen'] * len(columns_to_analyze)
+for patch, color in zip(bp2['boxes'], colors2):
+    patch.set_facecolor(color)
+
+ax2.set_title('After Z-Score Normalization', fontweight='bold', fontsize=14, pad=20)
+ax2.set_ylabel('Normalized Values (Z-Score)')
+ax2.grid(True, alpha=0.3)
+ax2.tick_params(axis='x', rotation=45)
+
+# Add statistics as text annotations with tighter spacing
+for i, col in enumerate(columns_to_analyze):
+    # Original data stats
+    orig_mean = df_cleaned[col].mean()
+    orig_std = df_cleaned[col].std()
+    ax1.text(0.02, 0.98 - i*0.05, f'{col}: μ={orig_mean:.1f}, σ={orig_std:.1f}', 
+             transform=ax1.transAxes, fontsize=9, 
+             verticalalignment='top', bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
+    
+    # Normalized data stats
+    norm_mean = df_normalized[f'{col}_normalized'].mean()
+    norm_std = df_normalized[f'{col}_normalized'].std()
+    ax2.text(0.02, 0.98 - i*0.05, f'{col}: μ={norm_mean:.3f}, σ={norm_std:.3f}', 
+             transform=ax2.transAxes, fontsize=9, 
+             verticalalignment='top', bbox=dict(boxstyle='round', facecolor='lightgreen', alpha=0.8))
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{Experiment 7/Before vs After Normalization.png}
+	\caption{Box Plot of Before and After Normalization}
+	\label{fig:beforeandafternormalization}
+\end{figure}
+
+\end{document}
